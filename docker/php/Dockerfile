@@ -14,16 +14,28 @@ COPY --from=node:16.15 /usr/local/bin /usr/local/bin
 COPY --from=node:16.15 /usr/local/lib /usr/local/lib
 
 RUN apt-get update && \
-    apt-cache search libpq && \
+    # apt-cache search libpq && \
     apt-get -y install \
+    gcc \
+    make \
     git \
-    zip \
     unzip \
     vim \
     libpq-dev \
-    && echo "deb http://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libmcrypt-dev \
+    curl \
+    gnupg \
+    openssl \
+    git \
+    zip \
+    vim \
+    # && echo "deb http://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list \
     && apt-get update \
-    && apt-get -y install libpq-dev \
-    && docker-php-ext-install pdo_pgsql bcmath
+    && docker-php-ext-install pdo_pgsql bcmath  \
+    && docker-php-ext-install pdo_pgsql pgsql \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg
 ENV TZ=Asia/Tokyo
 WORKDIR /var/www/html
